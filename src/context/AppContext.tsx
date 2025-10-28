@@ -2,7 +2,7 @@ import React, { createContext, useContext, useReducer, useEffect } from 'react';
 import { AppState, SectionType, ChatMessage, MCPConnection, AutoConnectRule, SourceItem } from '../types';
 
 // Action types
-type AppAction = 
+type AppAction =
   | { type: 'SET_ACTIVE_SECTION'; payload: SectionType }
   | { type: 'TOGGLE_LEFT_NAV' }
   | { type: 'SET_RIGHT_SIDEBAR_VISIBLE'; payload: boolean }
@@ -22,7 +22,7 @@ const initialState: AppState = {
   ui: {
     activeSection: 'chatbox',
     leftNavCollapsed: false,
-    rightSidebarVisible: true,
+    rightSidebarVisible: false,
   },
   chat: {
     messages: [],
@@ -48,10 +48,11 @@ function appReducer(state: AppState, action: AppAction): AppState {
         ui: {
           ...state.ui,
           activeSection: action.payload,
-          rightSidebarVisible: action.payload === 'chatbox',
+          // Don't automatically show right sidebar when switching to chatbox
+          rightSidebarVisible: action.payload === 'chatbox' ? state.ui.rightSidebarVisible : false,
         },
       };
-    
+
     case 'TOGGLE_LEFT_NAV':
       return {
         ...state,
@@ -60,7 +61,7 @@ function appReducer(state: AppState, action: AppAction): AppState {
           leftNavCollapsed: !state.ui.leftNavCollapsed,
         },
       };
-    
+
     case 'SET_RIGHT_SIDEBAR_VISIBLE':
       return {
         ...state,
@@ -69,7 +70,7 @@ function appReducer(state: AppState, action: AppAction): AppState {
           rightSidebarVisible: action.payload,
         },
       };
-    
+
     case 'ADD_CHAT_MESSAGE':
       return {
         ...state,
@@ -78,7 +79,7 @@ function appReducer(state: AppState, action: AppAction): AppState {
           messages: [...state.chat.messages, action.payload],
         },
       };
-    
+
     case 'SET_CHAT_LOADING':
       return {
         ...state,
@@ -87,7 +88,7 @@ function appReducer(state: AppState, action: AppAction): AppState {
           isLoading: action.payload,
         },
       };
-    
+
     case 'SET_CHAT_SOURCES':
       return {
         ...state,
@@ -96,7 +97,7 @@ function appReducer(state: AppState, action: AppAction): AppState {
           sources: action.payload,
         },
       };
-    
+
     case 'SET_MCP_CONNECTIONS':
       return {
         ...state,
@@ -105,7 +106,7 @@ function appReducer(state: AppState, action: AppAction): AppState {
           connections: action.payload,
         },
       };
-    
+
     case 'SET_MCP_LOADING':
       return {
         ...state,
@@ -114,7 +115,7 @@ function appReducer(state: AppState, action: AppAction): AppState {
           isLoading: action.payload,
         },
       };
-    
+
     case 'UPDATE_MCP_CONNECTION':
       return {
         ...state,
@@ -127,7 +128,7 @@ function appReducer(state: AppState, action: AppAction): AppState {
           ),
         },
       };
-    
+
     case 'SET_AUTOCONNECT_RULES':
       return {
         ...state,
@@ -136,7 +137,7 @@ function appReducer(state: AppState, action: AppAction): AppState {
           rules: action.payload,
         },
       };
-    
+
     case 'SET_AUTOCONNECT_LOADING':
       return {
         ...state,
@@ -145,7 +146,7 @@ function appReducer(state: AppState, action: AppAction): AppState {
           isLoading: action.payload,
         },
       };
-    
+
     case 'UPDATE_AUTOCONNECT_RULE':
       return {
         ...state,
@@ -158,13 +159,13 @@ function appReducer(state: AppState, action: AppAction): AppState {
           ),
         },
       };
-    
+
     case 'LOAD_STATE':
       return {
         ...state,
         ...action.payload,
       };
-    
+
     default:
       return state;
   }
@@ -191,26 +192,28 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       'autoConnectRules'
     ], (result) => {
       if (result.activeSection) {
-        dispatch({ type: 'LOAD_STATE', payload: {
-          ui: {
-            activeSection: result.activeSection || 'chatbox',
-            leftNavCollapsed: result.leftNavCollapsed || false,
-            rightSidebarVisible: (result.activeSection || 'chatbox') === 'chatbox',
-          },
-          chat: {
-            messages: result.chatMessages || [],
-            sources: result.chatSources || [],
-            isLoading: false,
-          },
-          mcp: {
-            connections: result.mcpConnections || [],
-            isLoading: false,
-          },
-          autoConnect: {
-            rules: result.autoConnectRules || [],
-            isLoading: false,
-          },
-        }});
+        dispatch({
+          type: 'LOAD_STATE', payload: {
+            ui: {
+              activeSection: result.activeSection || 'chatbox',
+              leftNavCollapsed: result.leftNavCollapsed || false,
+              rightSidebarVisible: false,
+            },
+            chat: {
+              messages: result.chatMessages || [],
+              sources: result.chatSources || [],
+              isLoading: false,
+            },
+            mcp: {
+              connections: result.mcpConnections || [],
+              isLoading: false,
+            },
+            autoConnect: {
+              rules: result.autoConnectRules || [],
+              isLoading: false,
+            },
+          }
+        });
       }
     });
   }, []);

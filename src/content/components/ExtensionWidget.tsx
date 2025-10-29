@@ -5,7 +5,7 @@ interface ExtensionWidgetProps {
 }
 
 const ExtensionWidget: React.FC<ExtensionWidgetProps> = ({ onClose }) => {
-  const [isMinimized, setIsMinimized] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(true);
   const [activeSection, setActiveSection] = useState<'dashboard' | 'analytics' | 'settings'>('dashboard');
   const [extensionEnabled, setExtensionEnabled] = useState(true);
 
@@ -72,7 +72,7 @@ const ExtensionWidget: React.FC<ExtensionWidgetProps> = ({ onClose }) => {
             </button>
           </div>
         </div>
-        
+
         {/* Navigation Tabs */}
         <div className="flex space-x-1 mt-3">
           {[
@@ -83,11 +83,10 @@ const ExtensionWidget: React.FC<ExtensionWidgetProps> = ({ onClose }) => {
             <button
               key={section.id}
               onClick={() => setActiveSection(section.id as any)}
-              className={`px-3 py-1 rounded text-sm transition-colors ${
-                activeSection === section.id
+              className={`px-3 py-1 rounded text-sm transition-colors ${activeSection === section.id
                   ? 'bg-white/20 text-white'
                   : 'text-white/70 hover:text-white hover:bg-white/10'
-              }`}
+                }`}
             >
               <span className="mr-1">{section.icon}</span>
               {section.label}
@@ -110,7 +109,7 @@ const ExtensionWidget: React.FC<ExtensionWidgetProps> = ({ onClose }) => {
                 <div className="text-sm text-gray-600">Success Rate</div>
               </div>
             </div>
-            
+
             <div className="border-t pt-3">
               <h3 className="font-medium text-gray-800 mb-2">Quick Actions</h3>
               <div className="space-y-2">
@@ -136,7 +135,7 @@ const ExtensionWidget: React.FC<ExtensionWidgetProps> = ({ onClose }) => {
               <p className="text-sm text-gray-600 mb-4">
                 Track your browsing patterns and extension usage
               </p>
-              
+
               <div className="space-y-3">
                 <div className="flex justify-between items-center p-2 bg-gray-50 rounded">
                   <span className="text-sm">Pages Visited Today</span>
@@ -159,31 +158,29 @@ const ExtensionWidget: React.FC<ExtensionWidgetProps> = ({ onClose }) => {
           <div className="space-y-4">
             <div>
               <h3 className="font-medium text-gray-800 mb-3">Extension Settings</h3>
-              
+
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-gray-700">Enable Extension</span>
                   <button
                     onClick={toggleExtension}
-                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                      extensionEnabled ? 'bg-blue-500' : 'bg-gray-300'
-                    }`}
+                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${extensionEnabled ? 'bg-blue-500' : 'bg-gray-300'
+                      }`}
                   >
                     <span
-                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                        extensionEnabled ? 'translate-x-6' : 'translate-x-1'
-                      }`}
+                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${extensionEnabled ? 'translate-x-6' : 'translate-x-1'
+                        }`}
                     />
                   </button>
                 </div>
-                
+
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-gray-700">Auto-minimize</span>
                   <button className="relative inline-flex h-6 w-11 items-center rounded-full bg-gray-300">
                     <span className="inline-block h-4 w-4 transform rounded-full bg-white transition-transform translate-x-1" />
                   </button>
                 </div>
-                
+
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-gray-700">Show notifications</span>
                   <button className="relative inline-flex h-6 w-11 items-center rounded-full bg-blue-500">
@@ -191,7 +188,7 @@ const ExtensionWidget: React.FC<ExtensionWidgetProps> = ({ onClose }) => {
                   </button>
                 </div>
               </div>
-              
+
               <div className="mt-4 pt-3 border-t">
                 <button className="w-full bg-red-50 text-red-600 py-2 px-3 rounded text-sm hover:bg-red-100 transition-colors">
                   Reset All Settings

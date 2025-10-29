@@ -2,10 +2,11 @@
     "name": "chrome-extension-react-vite",
     "version": "1.0.0",
     "description": "Chrome Extension built with React, Vite, and Tailwind CSS",
-    "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "vite build && npm run copy-manifest",
+        "build": "npm run build:main && npm run build:content && npm run copy-manifest",
+        "build:main": "vite build",
+        "build:content": "vite build --config vite.content.config.ts",
         "copy-manifest": "copy public\\manifest.json dist\\manifest.json",
         "preview": "vite preview",
         "clean": "rmdir /s /q dist"

@@ -63,6 +63,35 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             });
             return true; // Keep message channel open for async response
 
+        case 'OAUTH_SUCCESS':
+            // Handle OAuth callback success
+            console.log('OAuth success, code received');
+            // Store the code and state for the sidepanel to handle
+            chrome.storage.local.set({
+                oauth_pending: {
+                    code: message.code,
+                    state: message.state,
+                    timestamp: Date.now()
+                }
+            }).then(() => {
+                console.log('OAuth data stored, waiting for sidepanel to process');
+                sendResponse({ success: true });
+            }).catch((error) => {
+                console.error('Failed to store OAuth data:', error);
+                sendResponse({ success: false, error: error.message });
+            });
+            return true; // Keep message channel open for async response
+
+        case 'OAUTH_ERROR':
+            console.error('OAuth error:', message.error, message.errorDescription);
+            sendResponse({ success: false, error: message.error });
+            break;
+
+        case 'SIGNOUT_SUCCESS':
+            console.log('User signed out successfully');
+            sendResponse({ success: true });
+            break;
+
         default:
             console.log('Unknown message type:', message.type);
     }

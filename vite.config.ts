@@ -25,10 +25,12 @@ export default defineConfig({
             return 'content.css';
           }
           return 'assets/[name]-[hash][extname]';
-        }
+        },
+        format: 'es'
       }
     },
-    cssCodeSplit: false
+    cssCodeSplit: false,
+    target: 'esnext'
   },
   define: {
     'process.env.NODE_ENV': JSON.stringify('production')

@@ -134,29 +134,46 @@
   - Update TypeScript configurations for new interfaces
   - Test build output and extension loading
 
-- [ ] 9. Add error handling and loading states
-- [ ] 9.1 Implement error boundaries and fallback UI
+- [x] 9. Add AWS Cognito authentication integration
+- [x] 9.1 Implement AuthService with PKCE flow
+  - Created complete auth-service.ts with login, logout, token refresh
+  - Integrated PKCE code generation and validation
+  - Added token management and automatic refresh scheduling
+  - Implemented OAuth callback handling in service worker
+  - _All authentication requirements implemented_
+
+- [x] 9.2 Create authentication UI components
+  - Built AuthGuard component for protecting routes
+  - Created LoginButton with loading states
+  - Implemented UserProfile component with logout functionality
+  - Integrated authentication into SidePanelApp
+  - _Authentication UI complete and functional_
+
+- [ ] 10. Add error handling and loading states
+- [ ] 10.1 Implement error boundaries and fallback UI
   - Create error boundary components for each major section
   - Add user-friendly error messages and retry functionality
   - Implement graceful degradation for failed components
   - _Requirements: All sections need proper error handling_
 
-- [ ] 9.2 Add loading states and skeleton screens
+- [ ] 10.2 Add loading states and skeleton screens
   - Create loading indicators for data fetching operations
   - Implement skeleton screens for better perceived performance
   - Add proper loading states for MCP connections and chat operations
   - _Requirements: All sections need loading state management_
 
-- [ ] 10. Testing and quality assurance
-- [ ] 10.1 Create unit tests for major components
+- [ ] 11. Testing and quality assurance
+- [ ] 11.1 Create unit tests for major components
   - Write tests for LeftNavigation, ChatBox, MCP, and AutoConnect components
   - Test state management and data persistence logic
   - Add tests for utility functions and data transformations
+  - Test authentication flow and token management
   - _Requirements: All components need proper test coverage_
 
-- [ ] 10.2 Perform integration testing and bug fixes
+- [ ] 11.2 Perform integration testing and bug fixes
   - Test section switching and state persistence
   - Verify Chrome storage integration works correctly
   - Test responsive design across different panel sizes
+  - Test authentication flow end-to-end
   - Fix any bugs discovered during testing
   - _Requirements: All requirements need integration testing_

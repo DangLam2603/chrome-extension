@@ -4,16 +4,19 @@
     "description": "Chrome Extension built with React, Vite, and Tailwind CSS",
     "scripts": {
         "dev": "vite",
-        "build": "npm run build:main && npm run build:content && npm run copy-manifest",
+        "build": "npm run build:main && npm run build:content && npm run copy-files",
         "build:main": "vite build",
         "build:content": "vite build --config vite.content.config.ts",
-        "copy-manifest": "copy public\\manifest.json dist\\manifest.json",
+        "copy-files": "copy public\\manifest.json dist\\manifest.json && copy public\\callback.html dist\\callback.html && copy public\\callback.js dist\\callback.js && copy public\\signout.html dist\\signout.html && copy public\\signout.js dist\\signout.js",
         "preview": "vite preview",
         "clean": "rmdir /s /q dist"
     },
     "dependencies": {
         "react": "^18.2.0",
-        "react-dom": "^18.2.0"
+        "react-dom": "^18.2.0",
+        "aws-sdk": "^2.1490.0",
+        "jose": "^4.15.4",
+        "crypto-js": "^4.2.0"
     },
     "devDependencies": {
         "@types/chrome": "^0.1.27",

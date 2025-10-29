@@ -69,12 +69,53 @@ export interface ExtensionStorage {
     language: 'en' | 'vi';
 }
 
+// Authentication types
+export interface CognitoTokens {
+    accessToken: string;
+    refreshToken: string;
+    idToken: string;
+    expiresAt: number;
+}
+
+export interface CognitoUserInfo {
+    sub: string;
+    email: string;
+    email_verified: boolean;
+    phone_number?: string;
+    phone_number_verified?: boolean;
+    name?: string;
+    given_name?: string;
+    family_name?: string;
+    picture?: string;
+}
+
+export interface AuthError {
+    type: string;
+    message: string;
+    code?: string;
+}
+
+export interface AuthState {
+    isAuthenticated: boolean;
+    isLoading: boolean;
+    user: CognitoUserInfo | null;
+    tokens: CognitoTokens | null;
+    error: AuthError | null;
+}
+
+export interface PKCEData {
+    codeVerifier: string;
+    codeChallenge: string;
+    state: string;
+}
+
 export interface AppState {
     ui: {
         activeSection: SectionType;
         leftNavCollapsed: boolean;
         rightSidebarVisible: boolean;
     };
+    auth: AuthState;
     chat: {
         messages: ChatMessage[];
         sources: SourceItem[];

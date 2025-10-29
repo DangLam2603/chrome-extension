@@ -4,6 +4,7 @@
     "version": "1.0.0",
     "description": "A Chrome extension built with React, Vite, and Tailwind CSS",
     "permissions": [
+        "identity",
         "storage",
         "activeTab",
         "sidePanel",
@@ -11,10 +12,12 @@
     ],
     "host_permissions": [
         "https://*/*",
-        "http://*/*"
+        "http://*/*",
+        "https://*.amazoncognito.com/*"
     ],
     "background": {
-        "service_worker": "service-worker.js"
+        "service_worker": "service-worker.js",
+        "type": "module"
     },
     "content_scripts": [
         {
@@ -39,5 +42,18 @@
     },
     "content_security_policy": {
         "extension_pages": "script-src 'self'; object-src 'self'"
-    }
+    },
+    "web_accessible_resources": [
+        {
+            "resources": [
+                "callback.html",
+                "callback.js",
+                "signout.html",
+                "signout.js"
+            ],
+            "matches": [
+                "<all_urls>"
+            ]
+        }
+    ]
 }

@@ -6,15 +6,12 @@ import RightSidebar from '../components/Layout/RightSidebar';
 import ChatBoxSection from '../components/Sections/ChatBox/ChatBoxSection';
 import MCPManagementSection from '../components/Sections/MCP/MCPManagementSection';
 import AutoConnectSection from '../components/Sections/AutoConnect/AutoConnectSection';
+import AuthGuard from '../components/Auth/AuthGuard';
 
 const SidePanelApp: React.FC = () => {
-  const { state, dispatch } = useAppContext();
+  const { state } = useAppContext();
   const { activeSection, leftNavCollapsed, rightSidebarVisible } = state.ui;
   const { sources } = state.chat;
-
-  const handleToggleRightSidebar = () => {
-    dispatch({ type: 'SET_RIGHT_SIDEBAR_VISIBLE', payload: !rightSidebarVisible });
-  };
 
   const renderMainContent = () => {
     switch (activeSection) {
@@ -43,16 +40,17 @@ const SidePanelApp: React.FC = () => {
   };
 
   return (
-    <MainLayout
-      activeSection={activeSection}
-      leftNavCollapsed={leftNavCollapsed}
-      rightSidebarVisible={rightSidebarVisible}
-      leftNavigation={<LeftNavigation />}
-      rightSidebar={renderRightSidebar()}
-      onToggleRightSidebar={handleToggleRightSidebar}
-    >
-      {renderMainContent()}
-    </MainLayout>
+    <AuthGuard>
+      <MainLayout
+        activeSection={activeSection}
+        leftNavCollapsed={leftNavCollapsed}
+        rightSidebarVisible={rightSidebarVisible}
+        leftNavigation={<LeftNavigation />}
+        rightSidebar={renderRightSidebar()}
+      >
+        {renderMainContent()}
+      </MainLayout>
+    </AuthGuard>
   );
 };
 

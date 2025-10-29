@@ -7,6 +7,7 @@ export default defineConfig({
   base: './',
   build: {
     outDir: 'dist',
+    minify: false,
     rollupOptions: {
       input: {
         'service-worker': path.resolve(__dirname, 'src/background/service-worker.ts'),

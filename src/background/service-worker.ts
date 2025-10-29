@@ -10,6 +10,13 @@ chrome.runtime.onInstalled.addListener((details) => {
         extensionEnabled: true,
         theme: 'light'
     });
+
+    // Check authentication status on install
+    chrome.storage.local.get(['isAuthenticated'], (result) => {
+        if (!result.isAuthenticated) {
+            console.log('User not authenticated');
+        }
+    });
 });
 
 // Handle tab updates
@@ -62,6 +69,18 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 sendResponse({ enabled: newState });
             });
             return true; // Keep message channel open for async response
+
+        case 'CHECK_AUTH':
+            chrome.storage.local.get(['isAuthenticated'], (result) => {
+                sendResponse({ isAuthenticated: result.isAuthenticated || false });
+            });
+            return true;
+
+        case 'SIGN_OUT':
+            chrome.storage.local.remove(['authTokens', 'isAuthenticated', 'codeVerifier'], () => {
+                sendResponse({ success: true });
+            });
+            return true;
 
         default:
             console.log('Unknown message type:', message.type);

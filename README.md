@@ -210,3 +210,59 @@ During development:
 ## License
 
 MIT License - see LICENSE file for details
+
+## 
+Authentication
+
+This extension uses **OAuth2 with Google Sign-In** via **AWS Cognito** for user authentication.
+
+### Authentication Features
+
+- **Google OAuth2** - Sign in with your Google account
+- **AWS Cognito** - Secure token management and user pool
+- **PKCE Flow** - Enhanced security for browser extensions
+- **Auto Token Refresh** - Seamless session management
+- **Secure Storage** - Tokens stored in Chrome's encrypted storage
+
+### Setup Authentication
+
+Before using the extension, you need to configure the OAuth callback URL:
+
+1. **Build and load the extension** to get your Extension ID
+2. **Copy the Extension ID** from `chrome://extensions/`
+3. **Configure Cognito**:
+   - Go to AWS Cognito Console
+   - Navigate to your User Pool App Client settings
+   - Add callback URL: `https://<your-extension-id>.chromiumapp.org/`
+   - Save changes
+
+For detailed setup instructions, see [OAUTH_SETUP.md](./OAUTH_SETUP.md)
+
+### Authentication Flow
+
+1. User clicks extension icon
+2. If not authenticated, login screen appears
+3. Click "Sign in with Google"
+4. OAuth flow opens in new window
+5. User authenticates with Google
+6. Tokens are securely stored
+7. User is redirected to main app
+
+### Environment Variables
+
+Required environment variables in `.env`:
+
+```env
+VITE_AWS_REGION=ap-southeast-1
+VITE_USER_POOL_ID=your-user-pool-id
+VITE_CLIENT_ID=your-client-id
+VITE_COGNITO_DOMAIN=https://your-domain.auth.region.amazoncognito.com
+VITE_OAUTH_SCOPES=email openid profile
+```
+
+### Security Notes
+
+- Uses PKCE (Proof Key for Code Exchange) for enhanced security
+- Tokens are stored in `chrome.storage.local` (encrypted by Chrome)
+- Access tokens auto-refresh before expiration
+- No sensitive data is logged or exposed
